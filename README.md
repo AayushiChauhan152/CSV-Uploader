@@ -39,6 +39,6 @@ The frontend includes a navigation bar that allows users to jump to different se
 Bootstrap is used for styling to ensure the application is mobile-friendly.
 
 ### Technologies Used
-Backend: Python, Django, pandas, matplotlib, seaborn
-Frontend: HTML, CSS (Bootstrap)
-Database: SQLite (default for Django)
+Backend: Python, Django, pandas, matplotlib, seaborn <br>
+Frontend: HTML, CSS (Bootstrap)<br>
+Database: SQLite (default for Django)<br>
