@@ -11,9 +11,7 @@ This Django application allows users to upload CSV files, analyze data, and visu
 
 ### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone [<repository-url>](https://github.com/AayushiChauhan152/CSV-Uploader)
+1. Clone the repository
    
 ### Install dependencies:
 pip install -r requirements.txt
