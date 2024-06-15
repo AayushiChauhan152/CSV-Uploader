@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload CSV</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+          crossorigin="anonymous">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+        table {
+            margin-top: 20px;
+            margin-bottom: 60px;
+        }
+        form {
+            margin-bottom: 60px;
+        }
+        .section {
+            margin-bottom: 60px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">CSV Uploader</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#upload-section">Upload File</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#data-section">Data</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#statistics-section">Summary Statistics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#missing-values-section">Missing Values</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#plots-section">Histograms</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-5" style="text-align:center;">
+        {% if messages %}
+            <div class="alert alert-success">
+                {{ messages }}
+            </div>
+        {% endif %}
+
+        <div id="upload-section" class="section">
+            <h3 style="text-align:center">Upload CSV File</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="file" name="file" class="mt-5">
+                <button type="submit" class="btn btn-success">Upload</button>
+            </form>
+        </div>
+
+        {% if data %}
+            <div id="data-section" class="section">
+                <h3 style="text-align:center">Data of Uploaded CSV File:</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            {% for header in data.0 %}
+                                <th>{{ header }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in data|slice:"1:" %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if summary_stats %}
+            <div id="statistics-section" class="section">
+                <h3 style="text-align:center">Summary Statistics</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>Mean</th>
+                            <th>Median</th>
+                            <th>Standard Deviation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in summary_stats %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if missing_values %}
+            <div id="missing-values-section" class="section">
+                <h3 style="text-align:center">Missing Values</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Column</th>
+                            <th>Missing Values</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in missing_values %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+
+        {% if plots %}
+            <div id="plots-section" class="section">
+                <h3 style="text-align:center">Histograms</h3>
+                <div style="display:flex; justify-content:center; flex-wrap:wrap;">
+                    {% for plot in plots %}
+                        <div style="margin:10px;">
+                            <img src="{{ plot }}" alt="Histogram" style="width:350px; height:auto;">
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7x0l5jqXK5z5x5g3D5yUj5i5y5i5g5z5x5g"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-FYwB2ka6N34K5MCmsD6X8/Ta6B6V/C5+7KD1/D+czE5lh5meE5zyJlE5jyF5y5"
+            crossorigin="anonymous"></script>
+</body>
+</html>
